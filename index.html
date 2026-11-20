@@ -71,22 +71,22 @@
 
             <!-- アピールポイント（魅力的な説明） -->
             <div class="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                <div class="glass p-6 rounded-3xl border border-white hover:translate-y--1 transition-all shadow-md">
+                <div class="glass p-6 rounded-3xl border border-white hover:-translate-y-1 transition-all shadow-md">
                     <div class="text-3xl mb-3">⚡️</div>
                     <h3 class="text-lg font-bold text-teal-700 mb-2">爆速自動生成</h3>
                     <p class="text-xs text-gray-600 leading-relaxed">テーマを入力するだけで、AIが質問構成から結果、シェア用コピーを瞬時に用意。</p>
                 </div>
-                <div class="glass p-6 rounded-3xl border border-white hover:translate-y--1 transition-all shadow-md">
+                <div class="glass p-6 rounded-3xl border border-white hover:-translate-y-1 transition-all shadow-md">
                     <div class="text-3xl mb-3">📱</div>
                     <h3 class="text-lg font-bold text-pink-500 mb-2">スマホ完結</h3>
                     <p class="text-xs text-gray-600 leading-relaxed">パソコン不要。デザイン、コピー、公開設定までスマートフォンの画面のみで完了。</p>
                 </div>
-                <div class="glass p-6 rounded-3xl border border-white hover:translate-y--1 transition-all shadow-md">
+                <div class="glass p-6 rounded-3xl border border-white hover:-translate-y-1 transition-all shadow-md">
                     <div class="text-3xl mb-3">🚀</div>
                     <h3 class="text-lg font-bold text-teal-700 mb-2">勝手に広がる仕組み</h3>
                     <p class="text-xs text-gray-600 leading-relaxed">ユーザーが診断結果をSNS（X, Instagram）にシェアすることで、認知が自動的に爆発します。</p>
                 </div>
-                <div class="glass p-6 rounded-3xl border border-white hover:translate-y--1 transition-all shadow-md">
+                <div class="glass p-6 rounded-3xl border border-white hover:-translate-y-1 transition-all shadow-md">
                     <div class="text-3xl mb-3">💰</div>
                     <h3 class="text-lg font-bold text-pink-500 mb-2">運用コスト完全0円</h3>
                     <p class="text-xs text-gray-600 leading-relaxed">サーバーを借りる費用は一切なし。診断型LPによる新しいWEB集客を手軽にスタート可能。</p>
@@ -135,7 +135,7 @@
                         💳 あなたへの直接決済・口座設定
                     </h3>
                     <p class="text-xs text-gray-500 mb-4">
-                        ここにあなたのPayPayリンクや口座情報を入力してください。<strong class="text-pink-600">一般ユーザー画面では、あなたの個人名は非表示（システム暗号化）の状態で送金リンクのみが安全に機能します。</strong>
+                        ここにあなたのPayPayリンクや口座情報を入力してください。<strong class="text-pink-600">※この設定はこのブラウザ内にのみ保存され、他の人の画面には反映されません。お客様の画面に表示するには、サイト自体への設定が必要です（Muに依頼してください）。</strong>
                     </p>
                     
                     <div class="space-y-3">
@@ -163,7 +163,7 @@
                         </div>
                         
                         <button onclick="saveAdminProfile()" class="w-full py-2.5 bg-teal-600 text-white rounded-xl font-bold text-sm shadow hover:bg-teal-700 transition-all">
-                            受取口座・PayPay情報を安全に保存する
+                            受取口座・PayPay情報を保存する（このブラウザ内）
                         </button>
                     </div>
                 </div>
@@ -249,7 +249,7 @@
     <!-- ========================================== -->
     <!-- 3. 一般ユーザーお申し込み＆登録用モーダル -->
     <!-- ========================================== -->
-    <div id="userModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div id="userModal" onclick="if(event.target===this)closeUserModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="glass p-8 rounded-3xl w-full max-w-md shadow-2xl text-center border-2 border-teal-200 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-teal-400 to-pink-500"></div>
             
@@ -264,14 +264,23 @@
                 <p class="text-xs text-gray-500 leading-relaxed">月額1500円のサブスクリプションです。下記のお支払い方法でお申し込み完了後、即座にご利用を開始していただけます。</p>
             </div>
 
-            <!-- 運営決済を装った、安全な受取窓口UI -->
+            <!-- 決済窓口UI -->
             <div class="bg-slate-900 text-white p-5 rounded-2xl text-left mb-6 border border-slate-800 space-y-4">
                 <div class="flex items-center gap-3 pb-2 border-b border-slate-800">
                     <div class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-sm">🛡️</div>
                     <div>
                         <span class="text-xs font-bold text-teal-400 block">C'mon peep セキュア決済窓口</span>
-                        <span class="text-[9px] text-gray-400 block">パートナー認証アカウント: CP-9821</span>
+                        <span class="text-[9px] text-gray-400 block">カード決済はStripeの安全な決済ページで処理されます</span>
                     </div>
+                </div>
+
+                <!-- Stripeカード決済ボタン（リンク設定時のみ表示） -->
+                <div id="stripe-method" class="space-y-1 hidden">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">方法0: クレジットカード（Stripe）</span>
+                    <button onclick="redirectToStripe()" class="w-full py-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:brightness-110 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-all">
+                        <span>💳</span> カードで申し込む（月額1500円）
+                    </button>
+                    <p class="text-[9px] text-gray-400 text-center mt-1">※Stripeの安全な決済ページへ移動します（海外カード対応）</p>
                 </div>
 
                 <!-- PayPayダイレクトボタン -->
@@ -283,7 +292,7 @@
                     <p class="text-[9px] text-gray-400 text-center mt-1">※自動的にお支払い用アプリまたはブラウザページへ移動します</p>
                 </div>
 
-                <!-- 銀行振込カモフラージュ案内 -->
+                <!-- 銀行振込案内 -->
                 <div class="space-y-1 pt-2 border-t border-slate-800">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">方法2: 指定の決済口座へ振込</span>
                     <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
@@ -310,6 +319,20 @@
     <!-- スクリプト制御 -->
     <!-- ========================================== -->
     <script>
+        // ===== サイト共通の決済設定（お客様全員の画面に反映される設定はここ） =====
+        const SITE_CONFIG = {
+            stripePaymentLink: '', // Stripe決済リンク（発行後にMuがここへ設定）
+            paypayUrl: '',         // PayPay受取リンク（サイト共通）
+            bankInfo: ''           // 銀行口座情報（サイト共通）
+        };
+        function paymentConfig() {
+            return {
+                stripe: SITE_CONFIG.stripePaymentLink || '',
+                paypay: SITE_CONFIG.paypayUrl || localStorage.getItem('adminPayPayUrl') || '',
+                bank: SITE_CONFIG.bankInfo || localStorage.getItem('adminBankInfo') || ''
+            };
+        }
+
         // ビュー遷移制御 (SPA)
         function navigateTo(viewId) {
             const lpView = document.getElementById('lp-view');
@@ -334,27 +357,36 @@
             document.getElementById('userModal').classList.remove('hidden');
             
             // ローカルストレージから振込口座情報のみを取得して、表示を上書き
-            const storedBank = localStorage.getItem('adminBankInfo') || "【ご案内】振込口座での決済をご希望の場合は、決済申請後に送られるシステム案内メールに従って手続きを完了させてください。";
+            const cfg = paymentConfig();
+            const storedBank = cfg.bank || "【ご案内】銀行振込をご希望の場合は、運営までお問い合わせください。";
+            document.getElementById('stripe-method').classList.toggle('hidden', !cfg.stripe);
             document.getElementById('user-display-bank').innerText = storedBank;
         }
 
         function closeUserModal() {
             document.getElementById('userModal').classList.add('hidden');
         }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeUserModal(); });
+
+        // Stripe決済ページへの転送
+        function redirectToStripe() {
+            const url = paymentConfig().stripe;
+            if (url) { window.open(url, '_blank'); }
+        }
 
         // PayPayへのダイレクト転送
         function redirectToPayPay() {
-            const paypayUrl = localStorage.getItem('adminPayPayUrl') || '';
+            const paypayUrl = paymentConfig().paypay;
             if (paypayUrl) {
                 // 新しいタブで管理者のPayPay支払いリンクを開く
                 window.open(paypayUrl, '_blank');
             } else {
-                alert('ただいまPayPay決済システムがメンテナンス中です。お手数ですが、他の決済方法をご利用いただくか、しばらくお待ちください。');
+                alert('現在、PayPayでのお申し込みは準備中です。お手数ですが、他の決済方法をご利用ください。');
             }
         }
 
         function confirmPaymentRequest() {
-            alert('決済申請の報告を送信しました！\nC\'mon peep セキュア認証システムが送金を検知次第、あなたのアカウントが有効化されます。');
+            alert('送金報告を受け付けました。\n運営が入金を確認次第、あなたのアカウントを有効化してご連絡します。');
             closeUserModal();
         }
 
@@ -373,7 +405,7 @@
             document.getElementById('display-admin-name').innerText = name;
             document.getElementById('display-admin-avatar').innerText = avatar;
 
-            alert('管理用の決済情報とプロフィールを暗号化保存しました。一般ユーザーには直接あなたの氏名を表示せず、PayPay決済機能と口座案内機能がセキュアに連動します。');
+            alert('保存しました。\n※この設定はこのブラウザ内にのみ保存され、お客様の画面には反映されません。サイトへの反映はMuに依頼してください。');
         }
 
         function loadAdminProfile() {
@@ -410,7 +442,7 @@
         }
 
         function publishDiagnosis() {
-            alert('おめでとうございます！診断LPの生成＆ホスティングが完了しました。\n【公開用URL】\nhttps://cmon-peep.net/diagnosis/demo_share_id\n\nSNS等に貼り付けて今すぐ集客を開始できます！');
+            alert('診断LPのプレビュー生成が完了しました。\n※公開用URLの発行機能は現在準備中です。発行の準備ができたらここにURLが表示されます。');
         }
 
 
